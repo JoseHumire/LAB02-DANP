@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "167048221538",
+    "project_id": "danp-f3b2e",
+    "storage_bucket": "danp-f3b2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167048221538:android:0c6c68f26fb6457672d23b",
+        "android_client_info": {
+          "package_name": "com.example.danp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167048221538-f3v0aua6gtkep35okn7mpbveb8j9lgtu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8pGi6Mer--g3wQSSfxctPwvgTI_G3-W8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167048221538-f3v0aua6gtkep35okn7mpbveb8j9lgtu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

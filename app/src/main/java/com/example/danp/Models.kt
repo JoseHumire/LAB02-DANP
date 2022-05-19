@@ -26,6 +26,7 @@ val districtsList = listOf(
 
 val busesList = listOf(
     BusLine(name = "AQP MASIVO", districtCode = 7, color = "Amarillo", quantity = 30, route = "A-7"),
+    BusLine(name = "Segrampo", districtCode = 1, color = "Amarillo", quantity = 30, route = "A-7"),
     BusLine(name = "AQP MASIVO", districtCode = 8, color = "Amarillo", quantity = 30, route = "A-7"),
     BusLine(name = "INTEGRA AREQUIPA", districtCode = 10, color = "Rojo", quantity = 30, route = "78"),
     BusLine(name = "INTEGRA AREQUIPA", districtCode = 1, color = "Rojo", quantity = 30, route = "78"),

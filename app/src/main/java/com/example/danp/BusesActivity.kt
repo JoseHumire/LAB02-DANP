@@ -31,10 +31,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.danp.ui.theme.DANPTheme
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ServerValue
+import com.google.firebase.database.ktx.database
+
+import com.google.firebase.ktx.Firebase
+
+//abstract class ReadAndWriteSnippets {
+//
+//    private val TAG = "ReadAndWriteSnippets"
+//
+//    // [START declare_database_ref]
+//    private lateinit var database: DatabaseReference
+//    // [END declare_database_ref]
+//
+//    fun initializeDbRef() {
+//        // [START initialize_database_ref]
+//        database = Firebase.database.reference
+//        // [END initialize_database_ref]
+//    }
+//}
+
+lateinit var m_database: DatabaseReference
 
 class BusesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        m_database = Firebase.database.reference
         setContent {
             BusesList()
         }
@@ -74,6 +102,7 @@ fun BusesList(){
 
 @Composable
 fun BusItemList(bus: BusLine){
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .shadow(5.dp, RoundedCornerShape(10.dp))
@@ -97,10 +126,19 @@ fun BusItemList(bus: BusLine){
             Text(text = "Buses: " + bus.quantity.toString(), style = TextStyle(fontSize = 15.sp))
         }
         Column(modifier = Modifier.padding(7.dp)) {
-            Button(onClick = {}) { Text(text = "Ver ruta") }
+            Button(onClick = {
+                m_database.child("user").child("bus").setValue(bus.name)
+                val intent = Intent(context, MapsActivity::class.java)
+                intent.putExtra("bus_name", bus.name.toString())
+                context.startActivity(intent)
+            })
+            { Text(text = "Ver ruta") }
         }
     }
 }
 
-
-
+//fun writeNewUser(userId: String, name: String, email: String) {
+//    val user = User(name, email)
+//
+//    database.child("users").child(userId).setValue(user)
+//}

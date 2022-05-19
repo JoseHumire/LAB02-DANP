@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DANP</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
 </resources>
