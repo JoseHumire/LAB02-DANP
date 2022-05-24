@@ -8,10 +8,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 fun DistrictsList() {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item {
             TitleList("Distritos de Arequipa")
@@ -53,30 +53,39 @@ fun DistrictsList() {
 @Composable
 fun DistrictItemList(district: District) {
     val context = LocalContext.current
-    Row(
-        modifier = Modifier
-            .shadow(5.dp, RoundedCornerShape(10.dp))
-            .fillMaxWidth()
-            .padding(10.dp)
-            .padding(10.dp),
+    Card(
+        modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp).fillMaxWidth(),
+        elevation = 2.dp,
+        backgroundColor = Color(myColorBackground.toColorInt()),
+        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .padding(10.dp),
 
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = district.name,
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
-            ),
-        )
-        Button(
-            onClick = {
-                val intent = Intent(context, BusesActivity::class.java)
-                intent.putExtra("district_code", district.code)
-                context.startActivity(intent)
-            },
-        ){
-            Text(text = "Ver buses")
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = district.name,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color(myColorPrimary.toColorInt()),
+                    fontStyle = FontStyle.Italic
+                    //fontWeight = FontWeight.Medium
+                ),
+            )
+            Button(
+                onClick = {
+                    val intent = Intent(context, BusesActivity::class.java)
+                    intent.putExtra("district_code", district.code)
+                    context.startActivity(intent)
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(myColorSecond.toColorInt()))
+            ){
+                Text(text = "Ver buses", style = TextStyle(color = Color(myColorBackground.toColorInt())))
+            }
         }
     }
 }

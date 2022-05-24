@@ -7,9 +7,9 @@ data class BusLine(
     val districtCode: Int,
     val color: String,
     val quantity: Int,
-    val route: String
+    val route: String,
+    val imageId: Int = R.drawable.microbus
 )
-
 
 val districtsList = listOf(
     District(name = "Arequipa", code = 1),
@@ -25,25 +25,25 @@ val districtsList = listOf(
 )
 
 val busesList = listOf(
-    BusLine(name = "AQP MASIVO", districtCode = 7, color = "Amarillo", quantity = 30, route = "A-7"),
-    BusLine(name = "Segrampo", districtCode = 1, color = "Amarillo", quantity = 30, route = "A-7"),
-    BusLine(name = "AQP MASIVO", districtCode = 8, color = "Amarillo", quantity = 30, route = "A-7"),
-    BusLine(name = "INTEGRA AREQUIPA", districtCode = 10, color = "Rojo", quantity = 30, route = "78"),
-    BusLine(name = "INTEGRA AREQUIPA", districtCode = 1, color = "Rojo", quantity = 30, route = "78"),
-    BusLine(name = "INTEGRA AREQUIPA", districtCode = 4, color = "Rojo", quantity = 30, route = "78"),
-    BusLine(name = "TRANSCAYMA", districtCode = 3, color = "Verde", quantity = 30, route = "24"),
-    BusLine(name = "TRANSCAYMA", districtCode = 10, color = "Verde", quantity = 30, route = "24"),
-    BusLine(name = "TRANSCAYMA", districtCode = 1, color = "Verde", quantity = 30, route = "24"),
-    BusLine(name = "TRANSCAYMA", districtCode = 8, color = "Verde", quantity = 30, route = "24"),
+    BusLine(name = "AQP MASIVO", districtCode = 7, color = "Amarillo", quantity = 30, route = "A-7", imageId = R.drawable.masivo),
+    BusLine(name = "SEGRAMPO", districtCode = 1, color = "Amarillo", quantity = 30, route = "A-7", imageId = R.drawable.segrampo),
+    BusLine(name = "AQP MASIVO", districtCode = 8, color = "Amarillo", quantity = 30, route = "A-7", imageId = R.drawable.masivo),
+    BusLine(name = "INTEGRA AREQUIPA", districtCode = 10, color = "Rojo", quantity = 30, route = "78", imageId = R.drawable.integra),
+    BusLine(name = "INTEGRA AREQUIPA", districtCode = 1, color = "Rojo", quantity = 30, route = "78", imageId = R.drawable.integra),
+    BusLine(name = "INTEGRA AREQUIPA", districtCode = 4, color = "Rojo", quantity = 30, route = "78", imageId = R.drawable.integra),
+    BusLine(name = "TRANSCAYMA", districtCode = 3, color = "Verde", quantity = 30, route = "24", imageId = R.drawable.transcayma),
+    BusLine(name = "TRANSCAYMA", districtCode = 10, color = "Verde", quantity = 30, route = "24", imageId = R.drawable.transcayma),
+    BusLine(name = "TRANSCAYMA", districtCode = 1, color = "Verde", quantity = 30, route = "24", imageId = R.drawable.transcayma),
+    BusLine(name = "TRANSCAYMA", districtCode = 8, color = "Verde", quantity = 30, route = "24", imageId = R.drawable.transcayma),
     BusLine(name = "EMARSISTRAN", districtCode = 8, color = "Azul", quantity = 30, route = "17"),
     BusLine(name = "EMARSISTRAN", districtCode = 5, color = "Azul", quantity = 30, route = "17"),
     BusLine(name = "EMARSISTRAN", districtCode = 7, color = "Azul", quantity = 30, route = "17"),
-    BusLine(name = "UNION AQP", districtCode = 2, color = "Celeste", quantity = 30, route = "C-1"),
-    BusLine(name = "UNION AQP", districtCode = 6, color = "Celeste", quantity = 30, route = "C-1"),
-    BusLine(name = "UNION AQP", districtCode = 1, color = "Celeste", quantity = 30, route = "C-1"),
-    BusLine(name = "MEGABUS AQP", districtCode = 8, color = "Morado", quantity = 30, route = "C-10"),
-    BusLine(name = "MEGABUS AQP", districtCode = 1, color = "Morado", quantity = 30, route = "C-10"),
-    BusLine(name = "MEGABUS AQP", districtCode = 9, color = "Morado", quantity = 30, route = "C-10"),
+    BusLine(name = "UNION AQP", districtCode = 2, color = "Celeste", quantity = 30, route = "C-1", imageId = R.drawable.union),
+    BusLine(name = "UNION AQP", districtCode = 6, color = "Celeste", quantity = 30, route = "C-1", imageId = R.drawable.union),
+    BusLine(name = "UNION AQP", districtCode = 1, color = "Celeste", quantity = 30, route = "C-1", imageId = R.drawable.union),
+    BusLine(name = "MEGABUS AQP", districtCode = 8, color = "Morado", quantity = 30, route = "C-10", imageId = R.drawable.megabus),
+    BusLine(name = "MEGABUS AQP", districtCode = 1, color = "Morado", quantity = 30, route = "C-10", imageId = R.drawable.megabus),
+    BusLine(name = "MEGABUS AQP", districtCode = 9, color = "Morado", quantity = 30, route = "C-10", imageId = R.drawable.megabus),
     BusLine(name = "GRAN PACHACUTEC", districtCode = 1, color = "Negro", quantity = 30, route = "C-2"),
     BusLine(name = "GRAN PACHACUTEC", districtCode = 2, color = "Negro", quantity = 30, route = "C-2"),
     BusLine(name = "GRAN PACHACUTEC", districtCode = 6, color = "Negro", quantity = 30, route = "C-2"),

@@ -5,7 +5,6 @@ public class MapsPunts {
     private double longitude;
 
     public MapsPunts(){
-
     }
 
     public double getLatitude() {

@@ -1,23 +1,22 @@
 package com.example.danp
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -26,21 +25,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.danp.ui.theme.DANPTheme
+import androidx.core.graphics.toColorInt
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.MutableData
-import com.google.firebase.database.Transaction
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ktx.database
 
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 //abstract class ReadAndWriteSnippets {
 //
@@ -69,13 +62,6 @@ class BusesActivity : ComponentActivity() {
     }
 }
 
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
-
-
 @Composable
 fun BusesList(){
     // Se obtiene el código del distrito enviado en el Intent
@@ -88,8 +74,7 @@ fun BusesList(){
     val distrito = districtsList.filter { it.code == districtCode }[0]
 
     LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ){
         item {
             TitleList(title = "Buses en " + distrito.name)
@@ -103,39 +88,138 @@ fun BusesList(){
 @Composable
 fun BusItemList(bus: BusLine){
     val context = LocalContext.current
-    Row(
-        modifier = Modifier
-            .shadow(5.dp, RoundedCornerShape(10.dp))
-            .fillMaxWidth()
-            .padding(10.dp)
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(modifier = Modifier.padding(7.dp)) {
-            Spacer(modifier = Modifier.height(1.dp))
-            Text(
-                text = bus.name,
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    color = Color.DarkGray,
-                    fontStyle = FontStyle.Italic
+    val openDialog = remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp).fillMaxWidth(),
+        elevation = 2.dp,
+        backgroundColor = Color(myColorBackground.toColorInt()),
+        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+    ){
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.padding(7.dp)) {
+
+                Text(
+                    text = bus.name,
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = Color(myColorPrimary.toColorInt()),
+                        fontStyle = FontStyle.Italic
+                    )
                 )
-            )
-            Text(text = "Color: " + bus.color, style = TextStyle(fontSize = 15.sp))
-            Text(text = "Ruta: " + bus.route, style = TextStyle(fontSize = 15.sp))
-            Text(text = "Buses: " + bus.quantity.toString(), style = TextStyle(fontSize = 15.sp))
-        }
-        Column(modifier = Modifier.padding(7.dp)) {
-            Button(onClick = {
-                m_database.child("user").child("bus").setValue(bus.name)
-                val intent = Intent(context, MapsActivity::class.java)
-                intent.putExtra("bus_name", bus.name.toString())
-                context.startActivity(intent)
-            })
-            { Text(text = "Ver ruta") }
+                //
+                Text(text = "Ruta: " + bus.route, style = TextStyle(fontSize = 15.sp))
+                //
+                Spacer(modifier = Modifier.height(1.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .background(color = Color(myColorSecond.toColorInt()))
+                )
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Min).fillMaxWidth().fillMaxHeight(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Button(onClick = {
+                        m_database.child("user").child("bus").setValue(bus.name)
+                        val intent = Intent(context, MapsActivity::class.java)
+                        intent.putExtra("bus_name", bus.name.toString())
+                        context.startActivity(intent)
+                    },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(myColorBackground.toColorInt())),
+                        modifier = Modifier.padding(0.dp).width(130.dp)
+                    ){
+                        Text(text = "Ver ruta", style = TextStyle(color = Color(myColorSecond.toColorInt())))
+                    }
+                    Divider(
+                        color = Color(myColorSecond.toColorInt()),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(2.dp)
+                    )
+                    Button(onClick = {
+                        //El boton abre el dialogo y vuelve verdadero el estado del dialogo
+                        openDialog.value = true
+                    },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(myColorBackground.toColorInt())),
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+                        Text(text = "Ver información", style = TextStyle(color = Color(myColorSecond.toColorInt())))
+                    }
+                }
+
+            }
+
         }
     }
+//  °Mostrar dialogo con información de empresa de transporte
+    if (openDialog.value) {
+        //La alerta se inicializa en falso
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            //Generamos el titulo con el nombre de la empresa de transporte
+            title = {
+                Text(text = "Ver: "+bus.name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp)
+            },
+            text = {
+                Row(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ){
+                    TransportImage(bus)
+                    Column(modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = "Ruta: " + bus.route, style = TextStyle(fontSize = 16.sp))
+                        Text(text = "Buses: " + bus.quantity.toString(), style = TextStyle(fontSize = 16.sp))
+                        Text(text = "Color: " + bus.color, style = TextStyle(fontSize = 16.sp))
+                    }
+                }
+            },
+            //El boton cierra el dialogo y vuelve falso el estado del dialogo
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                    }) {
+                    Text("Aceptar",style = TextStyle(color = Color(myColorPrimary.toColorInt())))
+                }
+            },
+            backgroundColor = Color(myColorBackground.toColorInt()),
+            contentColor = Color(myColorPrimary.toColorInt())
+        )
+    }
+
 }
+
+//Metodo que permite graficar la imagen de acuerdo al codigo almacenado
+@Composable
+private fun TransportImage(bus: BusLine) {
+    Image(
+        painter = painterResource(id = bus.imageId),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .padding(8.dp)
+            .size(84.dp)
+            .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
+    )
+}
+
+
 
 //fun writeNewUser(userId: String, name: String, email: String) {
 //    val user = User(name, email)
